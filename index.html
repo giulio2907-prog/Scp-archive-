@@ -1,49 +1,148 @@
-<section id="security-configurator" style="padding: 80px 10%; background: #fff;">
-    <h2 style="text-align: center; letter-spacing: 2px; margin-bottom: 50px;">SECURITY PLANS</h2>
-    
-    <div style="display: flex; gap: 40px; justify-content: center; flex-wrap: wrap;">
-        
-        <div class="card" style="border: 1px solid #e0e0e0; padding: 40px; width: 350px; transition: 0.3s;">
-            <h3 style="color: #c5a059;">Private Residence</h3>
-            <p>Protezione avanzata per la tua dimora al confine.</p>
-            <form action="javascript:void(0);">
-                <input type="text" placeholder="Indirizzo della Proprietà" required style="width: 100%; margin: 10px 0; padding: 10px; border: 1px solid #ddd;">
-                <input type="email" placeholder="Tua Email" required style="width: 100%; margin: 10px 0; padding: 10px; border: 1px solid #ddd;">
-                
-                <label style="display:block; margin-top:15px;">Livello di Sicurezza:</label>
-                <select style="width: 100%; padding: 10px; border: 1px solid #ddd; margin-bottom: 10px;">
-                    <option>Standard (Allarme + Sensori)</option>
-                    <option>Elite (Videosorveglianza 24/7)</option>
-                    <option>Fortress (AI & Intervento Rapido)</option>
-                </select>
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>SCP-096 - ACCESS RESTRICTED</title>
+    <style>
+        :root {
+            --paper-white: #e8e8e8;
+            --ink-black: #1a1a1a;
+            --stamp-red: #8b0000;
+            --alert-red: #ff0000;
+        }
 
-                <label style="display:block; margin-top:15px;">Scegli il giorno del sopralluogo:</label>
-                <input type="date" style="width: 100%; padding: 10px; border: 1px solid #ddd; margin-bottom: 20px;">
-                
-                <button style="background: #333; color: white; border: none; padding: 15px 30px; cursor: pointer; width: 100%; letter-spacing: 1px;">PRENOTA CONSULENZA</button>
-            </form>
-        </div>
+        body {
+            background-color: #0a0a0a;
+            color: var(--ink-black);
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            transition: background-color 0.2s;
+        }
 
-        <div class="card" style="border: 1px solid #333; padding: 40px; width: 350px; background: #333; color: #fff;">
-            <h3 style="color: #c5a059;">Corporate & Business</h3>
-            <p>Sistemi complessi per infrastrutture aziendali.</p>
-            <form action="javascript:void(0);">
-                <input type="text" placeholder="Sede Legale / Operativa" required style="width: 100%; margin: 10px 0; padding: 10px; border: 1px solid #555; background: #444; color: #fff;">
-                <input type="email" placeholder="Email Aziendale" required style="width: 100%; margin: 10px 0; padding: 10px; border: 1px solid #555; background: #444; color: #fff;">
-                
-                <label style="display:block; margin-top:15px;">Livello di Sicurezza:</label>
-                <select style="width: 100%; padding: 10px; border: 1px solid #555; background: #444; color: #fff; margin-bottom: 10px;">
-                    <option>Business Basic</option>
-                    <option>Industrial Safety</option>
-                    <option>High-Security Border Protection</option>
-                </select>
+        /* Schermata di Lockout */
+        #lockout-screen {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: black;
+            color: var(--alert-red);
+            z-index: 9999;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
 
-                <label style="display:block; margin-top:15px;">Data preferita:</label>
-                <input type="date" style="width: 100%; padding: 10px; border: 1px solid #555; background: #444; color: #fff; margin-bottom: 20px;">
-                
-                <button style="background: #c5a059; color: white; border: none; padding: 15px 30px; cursor: pointer; width: 100%; letter-spacing: 1px;">RICHIEDI AUDIT AZIENDALE</button>
-            </form>
-        </div>
+        #timer-display {
+            font-size: 5em;
+            margin: 20px 0;
+            font-weight: bold;
+            text-shadow: 0 0 20px var(--alert-red);
+        }
 
-    </div>
-</section>
+        /* Documento */
+        #main-document {
+            background-color: var(--paper-white);
+            width: 800px;
+            padding: 60px;
+            box-shadow: 0 0 40px rgba(0,0,0,0.9);
+            position: relative;
+            border: 1px solid #555;
+        }
+
+        .redacted {
+            background-color: #000;
+            color: #000;
+            cursor: help;
+        }
+        .redacted:hover { background-color: #bbb; }
+
+        .stamp {
+            position: absolute; top: 30px; right: 30px;
+            border: 4px solid var(--stamp-red); color: var(--stamp-red);
+            padding: 10px; transform: rotate(8deg); font-weight: bold;
+        }
+
+        .alert-flash { background-color: var(--alert-red) !important; }
+    </style>
+</head>
+<body oncopy="initiateLockdown()">
+
+<div id="lockout-screen">
+    <h1 style="letter-spacing: 5px;">!! ACCESS DENIED !!</h1>
+    <p>TENTATIVO DI VIOLAZIONE DATI RILEVATO. IL TERMINALE È STATO BLOCCATO.</p>
+    <div id="timer-display">30</div>
+    <p>SQUADRA DI SICUREZZA INVIATA ALLA TUA POSIZIONE.</p>
+</div>
+
+<div id="main-document">
+    <div class="stamp">CLASSIFIED<br>LEVEL 4</div>
+    <h1>FILE SCP-096</h1>
+    <p><strong>STATO:</strong> <span style="color: darkred;">CONTENUTO</span></p>
+    <hr>
+    <p>Il contenuto di questo file è protetto da un agente memetico letale. La copia del testo è un'infrazione di Classe-A.</p>
+    <p><strong>Descrizione:</strong> <span class="redacted">████████████████████████████████████████████████████████████████████████████████████████████████████████████████████</span></p>
+    <p style="margin-top: 50px; font-size: 0.8em; opacity: 0.6;">[PROVA A COPIARE QUESTO TESTO PER ATTIVARE IL LOCKDOWN]</p>
+</div>
+
+<script>
+    let isLocked = false;
+
+    function initiateLockdown() {
+        if (isLocked) return;
+        isLocked = true;
+
+        const body = document.body;
+        const lockoutScreen = document.getElementById('lockout-screen');
+        const timerDisplay = document.getElementById('timer-display');
+        let timeLeft = 30;
+
+        // 1. Effetto Flash Rapido (1 secondo)
+        let flashes = 0;
+        const flashInterval = setInterval(() => {
+            body.classList.toggle('alert-flash');
+            flashes++;
+            if (flashes > 10) {
+                clearInterval(flashInterval);
+                
+                // 2. Attiva schermata di blocco
+                document.getElementById('main-document').style.display = 'none';
+                lockoutScreen.style.display = 'flex';
+                
+                // 3. Avvia Timer
+                const countdown = setInterval(() => {
+                    timeLeft--;
+                    timerDisplay.innerText = timeLeft;
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(countdown);
+                        resetTerminal();
+                    }
+                }, 1000);
+            }
+        }, 100);
+    }
+
+    function resetTerminal() {
+        isLocked = false;
+        document.getElementById('lockout-screen').style.display = 'none';
+        document.getElementById('main-document').style.display = 'block';
+        document.body.classList.remove('alert-flash');
+        document.getElementById('timer-display').innerText = "30";
+        alert("Terminale ripristinato. Non tentare ulteriori violazioni.");
+    }
+
+    // Blocca anche il menu del tasto destro
+    document.addEventListener('contextmenu', e => {
+        e.preventDefault();
+        initiateLockdown();
+    });
+</script>
+
+</body>
+</html>
