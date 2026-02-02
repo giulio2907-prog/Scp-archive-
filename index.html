@@ -1,225 +1,48 @@
-<!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SCP FOUNDATION - DATABASE TERMINAL</title>
-    <style>
-        :root {
-            --bg-color: #0a0a0a;
-            --text-color: #e0e0e0;
-            --safe-green: #00ff41;
-            --warning-yellow: #ffcc00;
-            --alert-red: #ff0000;
-            --border-color: #333;
-        }
+let scpDatabase = [];
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Courier New', Courier, monospace;
-            margin: 0;
-            overflow-x: hidden;
-        }
+// 1. CARICA I DATI DAL JSON
+async function loadDatabase() {
+    const status = document.getElementById('search-status');
+    try {
+        const response = await fetch('database.json');
+        scpDatabase = await response.json();
+        renderCards(scpDatabase);
+        status.innerText = `DATABASE ONLINE: ${scpDatabase.length} FILE CARICATI.`;
+    } catch (error) {
+        status.innerText = "ERRORE: IMPOSSIBILE ACCEDERE AL DATABASE.";
+        console.error(error);
+    }
+}
 
-        /* --- HEADER --- */
-        header {
-            border-bottom: 3px solid var(--text-color);
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            background: #111;
-        }
+// 2. FUNZIONE PER CREARE LE CARD FISICAMENTE
+function renderCards(data) {
+    const grid = document.querySelector('.scp-grid');
+    grid.innerHTML = ""; // Pulisce la griglia
 
-        .logo-area h1 { margin: 0; letter-spacing: 5px; color: white; }
-        
-        /* --- LOG DI SISTEMA (ANGOLO) --- */
-        #system-logs {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 280px;
-            height: 100px;
-            background: rgba(0, 0, 0, 0.9);
-            border: 1px solid var(--safe-green);
-            color: var(--safe-green);
-            font-size: 0.7em;
-            padding: 10px;
-            z-index: 1000;
-            pointer-events: none;
-        }
+    data.forEach(scp => {
+        const card = document.createElement('div');
+        card.className = "scp-entry";
+        card.innerHTML = `
+            <span class="class-indicator class-${scp.class}">${scp.class.toUpperCase()}</span>
+            <h3>${scp.id}</h3>
+            <p><strong>NICKNAME:</strong> ${scp.name}</p>
+            <p>${scp.desc}</p>
+            <a href="documento.html" class="access-btn">ACCESS FILE</a>
+        `;
+        grid.appendChild(card);
+    });
+}
 
-        /* --- BARRA DI RICERCA --- */
-        .search-container {
-            padding: 40px 10%;
-            background: #161616;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .search-box {
-            display: flex;
-            border: 1px solid var(--safe-green);
-            padding: 10px;
-            background: #000;
-        }
-
-        .search-box input {
-            background: transparent;
-            border: none;
-            color: var(--safe-green);
-            width: 100%;
-            font-family: inherit;
-            outline: none;
-            font-size: 1.2em;
-        }
-
-        /* --- GRIGLIA SCP --- */
-        .scp-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            padding: 40px 10%;
-        }
-
-        .scp-entry {
-            border: 1px solid var(--border-color);
-            background: #111;
-            padding: 20px;
-            transition: 0.3s;
-        }
-
-        .scp-entry:hover { border-color: var(--safe-green); }
-
-        .class-indicator {
-            font-weight: bold;
-            padding: 2px 5px;
-            border: 1px solid;
-            float: right;
-        }
-
-        .class-safe { color: var(--safe-green); }
-        .class-euclid { color: var(--warning-yellow); }
-        .class-keter { color: var(--alert-red); }
-
-        .access-btn {
-            display: block;
-            margin-top: 20px;
-            text-align: center;
-            padding: 10px;
-            background: #222;
-            color: white;
-            text-decoration: none;
-            border: 1px solid #444;
-        }
-
-        .access-btn:hover { background: white; color: black; }
-
-        .redacted { background: #555; color: #555; }
-        .redacted:hover { background: transparent; color: inherit; }
-
-    </style>
-</head>
-<body>
-
-<header>
-    <div class="logo-area">
-        <h1>SCP FOUNDATION</h1>
-        <small>SECURE. CONTAIN. PROTECT.</small>
-    </div>
-    <div style="text-align: right; border: 1px solid red; padding: 5px; color: red;">
-        CLEARANCE: LEVEL 4
-    </div>
-</header>
-
-<div id="system-logs">
-    <div class="log-line">>> SYSTEM BOOT COMPLETE...</div>
-</div>
-
-<section class="search-container">
-    <div class="search-box">
-        <span style="color: var(--safe-green); margin-right: 10px;">QUERY:></span>
-        <input type="text" id="scpSearch" placeholder="CERCA PER NUMERO O NOME..." onkeyup="filterSCP()">
-    </div>
-    <p id="search-status" style="font-size: 0.8em; margin-top: 10px; color: #666;">DATABASE ONLINE</p>
-</section>
-
-<section class="scp-grid">
+// 3. FUNZIONE DI RICERCA AGGIORNATA
+function filterSCP() {
+    let input = document.getElementById('scpSearch').value.toUpperCase();
+    let filtered = scpDatabase.filter(scp => 
+        scp.id.includes(input) || scp.name.toUpperCase().includes(input)
+    );
+    renderCards(filtered);
     
-    <div class="scp-entry" style="border: 1px dashed var(--alert-red);">
-        <span class="class-indicator" style="color:red">TOP SECRET</span>
-        <h3>SCP-001</h3>
-        <p><strong>NICKNAME:</strong> [DATI CANCELLATI]</p>
-        <p>Richiede autorizzazione O5 per la decriptazione.</p>
-        <a href="scp-001.html" class="access-btn" style="border-color: red;">TENTA ACCESSO</a>
-    </div>
+    document.getElementById('search-status').innerText = `TROVATI ${filtered.length} RISULTATI.`;
+}
 
-    <div class="scp-entry">
-        <span class="class-indicator class-euclid">EUCLID</span>
-        <h3>SCP-173</h3>
-        <p><strong>NICKNAME:</strong> The Sculpture</p>
-        <p>Mantenere contatto visivo costante. <span class="redacted">█████</span></p>
-        <a href="documento.html" class="access-btn">ACCESS FILE</a>
-    </div>
-
-    <div class="scp-entry">
-        <span class="class-indicator class-keter">KETER</span>
-        <h3>SCP-682</h3>
-        <p><strong>NICKNAME:</strong> Hard-to-Destroy Reptile</p>
-        <p>Estremamente ostile a ogni forma di vita.</p>
-        <a href="documento.html" class="access-btn">ACCESS FILE</a>
-    </div>
-
-    <div class="scp-entry">
-        <span class="class-indicator class-safe">SAFE</span>
-        <h3>SCP-999</h3>
-        <p><strong>NICKNAME:</strong> The Tickle Monster</p>
-        <p>Massa gelatinosa amichevole.</p>
-        <a href="documento.html" class="access-btn">ACCESS FILE</a>
-    </div>
-
-</section>
-
-<script>
-    // --- LOGICA RICERCA ---
-    function filterSCP() {
-        let input = document.getElementById('scpSearch').value.toUpperCase();
-        let cards = document.getElementsByClassName('scp-entry');
-        let status = document.getElementById('search-status');
-        let count = 0;
-
-        for (let card of cards) {
-            let text = card.innerText.toUpperCase();
-            if (text.includes(input)) {
-                card.style.display = "";
-                count++;
-            } else {
-                card.style.display = "none";
-            }
-        }
-        status.innerText = `TROVATI ${count} FILE CORRISPONDENTI.`;
-    }
-
-    // --- LOG DI SISTEMA ---
-    const messages = [
-        ">> ANALISI MEMETICA IN CORSO...",
-        ">> UPLINK CRITTOGRAFATO ATTIVO.",
-        ">> MONITORAGGIO TERMINALE AGENTE...",
-        ">> FILE SCP-096 AGGIORNATO.",
-        ">> TRACCIAMENTO IP ORIGIN... [FAIL]",
-        ">> CONNESSIONE SITO-19 STABILE."
-    ];
-
-    function addLog() {
-        const container = document.getElementById('system-logs');
-        const log = document.createElement('div');
-        log.style.marginBottom = "5px";
-        log.innerText = messages[Math.floor(Math.random() * messages.length)];
-        container.appendChild(log);
-        if (container.childNodes.length > 5) container.removeChild(container.firstChild);
-    }
-    setInterval(addLog, 4000);
-
-</script>
-
-</body>
-</html>
+// Inizializza al caricamento
+window.onload = loadDatabase;
