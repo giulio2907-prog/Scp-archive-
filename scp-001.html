@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>SCP-001 - ACCESSO CRIPTATO</title>
+    <style>
+        body { background: #050505; color: #ff0000; font-family: 'Courier New', monospace; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        #login-box { border: 2px solid #ff0000; padding: 40px; text-align: center; background: rgba(255, 0, 0, 0.05); }
+        input { background: transparent; border: 1px solid #ff0000; color: #ff0000; padding: 10px; text-align: center; margin: 20px 0; outline: none; }
+        button { background: #ff0000; color: black; border: none; padding: 10px 20px; cursor: pointer; font-weight: bold; }
+        #content { display: none; color: #e0e0e0; max-width: 600px; text-align: left; }
+    </style>
+</head>
+<body>
+
+<div id="login-box">
+    <h2 style="animation: blink 1s infinite;">AVVISO MEMETICO LETALE</h2>
+    <p>INSERIRE PASSWORD LIVELLO O5:</p>
+    <input type="password" id="pass">
+    <br>
+    <button onclick="check()">DECRIPTA</button>
+</div>
+
+<div id="content">
+    <h1>SCP-001: IL GUARDIANO</h1>
+    <p><strong>STATUS:</strong> CRIPTATO</p>
+    <p>Il soggetto è un'entità umanoide alata situata tra il Tigri e l'Eufrate. <span style="background:white; color:white">███████████</span></p>
+    <p><strong>ORDINE:</strong> DIMENTICA.</p>
+    <button onclick="location.href='index.html'" style="background:#444; color:white; font-size:0.7em;">LOGOUT</button>
+</div>
+
+<script>
+    function check() {
+        if (document.getElementById('pass').value.toUpperCase() === "FOUNDATION") {
+            document.getElementById('login-box').style.display = "none";
+            document.getElementById('content').style.display = "block";
+            document.body.style.background = "#1a1a1a";
+        } else {
+            alert("VIOLAZIONE RILEVATA.");
+        }
+    }
+</script>
+</body>
+</html>
