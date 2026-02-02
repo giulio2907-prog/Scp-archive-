@@ -2,146 +2,223 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>SCP-096 - ACCESS RESTRICTED</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCP FOUNDATION - DATABASE TERMINAL</title>
     <style>
         :root {
-            --paper-white: #e8e8e8;
-            --ink-black: #1a1a1a;
-            --stamp-red: #8b0000;
+            --bg-color: #0a0a0a;
+            --text-color: #e0e0e0;
+            --safe-green: #00ff41;
+            --warning-yellow: #ffcc00;
             --alert-red: #ff0000;
+            --border-color: #333;
         }
 
         body {
-            background-color: #0a0a0a;
-            color: var(--ink-black);
+            background-color: var(--bg-color);
+            color: var(--text-color);
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* --- HEADER --- */
+        header {
+            border-bottom: 3px solid var(--text-color);
+            padding: 20px;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow: hidden;
-            transition: background-color 0.2s;
+            justify-content: space-between;
+            background: #111;
         }
 
-        /* Schermata di Lockout */
-        #lockout-screen {
-            display: none;
+        .logo-area h1 { margin: 0; letter-spacing: 5px; color: white; }
+        
+        /* --- LOG DI SISTEMA (ANGOLO) --- */
+        #system-logs {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: black;
-            color: var(--alert-red);
-            z-index: 9999;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
+            bottom: 20px;
+            right: 20px;
+            width: 280px;
+            height: 100px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid var(--safe-green);
+            color: var(--safe-green);
+            font-size: 0.7em;
+            padding: 10px;
+            z-index: 1000;
+            pointer-events: none;
         }
 
-        #timer-display {
-            font-size: 5em;
-            margin: 20px 0;
+        /* --- BARRA DI RICERCA --- */
+        .search-container {
+            padding: 40px 10%;
+            background: #161616;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .search-box {
+            display: flex;
+            border: 1px solid var(--safe-green);
+            padding: 10px;
+            background: #000;
+        }
+
+        .search-box input {
+            background: transparent;
+            border: none;
+            color: var(--safe-green);
+            width: 100%;
+            font-family: inherit;
+            outline: none;
+            font-size: 1.2em;
+        }
+
+        /* --- GRIGLIA SCP --- */
+        .scp-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 40px 10%;
+        }
+
+        .scp-entry {
+            border: 1px solid var(--border-color);
+            background: #111;
+            padding: 20px;
+            transition: 0.3s;
+        }
+
+        .scp-entry:hover { border-color: var(--safe-green); }
+
+        .class-indicator {
             font-weight: bold;
-            text-shadow: 0 0 20px var(--alert-red);
+            padding: 2px 5px;
+            border: 1px solid;
+            float: right;
         }
 
-        /* Documento */
-        #main-document {
-            background-color: var(--paper-white);
-            width: 800px;
-            padding: 60px;
-            box-shadow: 0 0 40px rgba(0,0,0,0.9);
-            position: relative;
-            border: 1px solid #555;
+        .class-safe { color: var(--safe-green); }
+        .class-euclid { color: var(--warning-yellow); }
+        .class-keter { color: var(--alert-red); }
+
+        .access-btn {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            padding: 10px;
+            background: #222;
+            color: white;
+            text-decoration: none;
+            border: 1px solid #444;
         }
 
-        .redacted {
-            background-color: #000;
-            color: #000;
-            cursor: help;
-        }
-        .redacted:hover { background-color: #bbb; }
+        .access-btn:hover { background: white; color: black; }
 
-        .stamp {
-            position: absolute; top: 30px; right: 30px;
-            border: 4px solid var(--stamp-red); color: var(--stamp-red);
-            padding: 10px; transform: rotate(8deg); font-weight: bold;
-        }
+        .redacted { background: #555; color: #555; }
+        .redacted:hover { background: transparent; color: inherit; }
 
-        .alert-flash { background-color: var(--alert-red) !important; }
     </style>
 </head>
-<body oncopy="initiateLockdown()">
+<body>
 
-<div id="lockout-screen">
-    <h1 style="letter-spacing: 5px;">!! ACCESS DENIED !!</h1>
-    <p>TENTATIVO DI VIOLAZIONE DATI RILEVATO. IL TERMINALE È STATO BLOCCATO.</p>
-    <div id="timer-display">30</div>
-    <p>SQUADRA DI SICUREZZA INVIATA ALLA TUA POSIZIONE.</p>
+<header>
+    <div class="logo-area">
+        <h1>SCP FOUNDATION</h1>
+        <small>SECURE. CONTAIN. PROTECT.</small>
+    </div>
+    <div style="text-align: right; border: 1px solid red; padding: 5px; color: red;">
+        CLEARANCE: LEVEL 4
+    </div>
+</header>
+
+<div id="system-logs">
+    <div class="log-line">>> SYSTEM BOOT COMPLETE...</div>
 </div>
 
-<div id="main-document">
-    <div class="stamp">CLASSIFIED<br>LEVEL 4</div>
-    <h1>FILE SCP-096</h1>
-    <p><strong>STATO:</strong> <span style="color: darkred;">CONTENUTO</span></p>
-    <hr>
-    <p>Il contenuto di questo file è protetto da un agente memetico letale. La copia del testo è un'infrazione di Classe-A.</p>
-    <p><strong>Descrizione:</strong> <span class="redacted">████████████████████████████████████████████████████████████████████████████████████████████████████████████████████</span></p>
-    <p style="margin-top: 50px; font-size: 0.8em; opacity: 0.6;">[PROVA A COPIARE QUESTO TESTO PER ATTIVARE IL LOCKDOWN]</p>
-</div>
+<section class="search-container">
+    <div class="search-box">
+        <span style="color: var(--safe-green); margin-right: 10px;">QUERY:></span>
+        <input type="text" id="scpSearch" placeholder="CERCA PER NUMERO O NOME..." onkeyup="filterSCP()">
+    </div>
+    <p id="search-status" style="font-size: 0.8em; margin-top: 10px; color: #666;">DATABASE ONLINE</p>
+</section>
+
+<section class="scp-grid">
+    
+    <div class="scp-entry" style="border: 1px dashed var(--alert-red);">
+        <span class="class-indicator" style="color:red">TOP SECRET</span>
+        <h3>SCP-001</h3>
+        <p><strong>NICKNAME:</strong> [DATI CANCELLATI]</p>
+        <p>Richiede autorizzazione O5 per la decriptazione.</p>
+        <a href="scp-001.html" class="access-btn" style="border-color: red;">TENTA ACCESSO</a>
+    </div>
+
+    <div class="scp-entry">
+        <span class="class-indicator class-euclid">EUCLID</span>
+        <h3>SCP-173</h3>
+        <p><strong>NICKNAME:</strong> The Sculpture</p>
+        <p>Mantenere contatto visivo costante. <span class="redacted">█████</span></p>
+        <a href="documento.html" class="access-btn">ACCESS FILE</a>
+    </div>
+
+    <div class="scp-entry">
+        <span class="class-indicator class-keter">KETER</span>
+        <h3>SCP-682</h3>
+        <p><strong>NICKNAME:</strong> Hard-to-Destroy Reptile</p>
+        <p>Estremamente ostile a ogni forma di vita.</p>
+        <a href="documento.html" class="access-btn">ACCESS FILE</a>
+    </div>
+
+    <div class="scp-entry">
+        <span class="class-indicator class-safe">SAFE</span>
+        <h3>SCP-999</h3>
+        <p><strong>NICKNAME:</strong> The Tickle Monster</p>
+        <p>Massa gelatinosa amichevole.</p>
+        <a href="documento.html" class="access-btn">ACCESS FILE</a>
+    </div>
+
+</section>
 
 <script>
-    let isLocked = false;
+    // --- LOGICA RICERCA ---
+    function filterSCP() {
+        let input = document.getElementById('scpSearch').value.toUpperCase();
+        let cards = document.getElementsByClassName('scp-entry');
+        let status = document.getElementById('search-status');
+        let count = 0;
 
-    function initiateLockdown() {
-        if (isLocked) return;
-        isLocked = true;
-
-        const body = document.body;
-        const lockoutScreen = document.getElementById('lockout-screen');
-        const timerDisplay = document.getElementById('timer-display');
-        let timeLeft = 30;
-
-        // 1. Effetto Flash Rapido (1 secondo)
-        let flashes = 0;
-        const flashInterval = setInterval(() => {
-            body.classList.toggle('alert-flash');
-            flashes++;
-            if (flashes > 10) {
-                clearInterval(flashInterval);
-                
-                // 2. Attiva schermata di blocco
-                document.getElementById('main-document').style.display = 'none';
-                lockoutScreen.style.display = 'flex';
-                
-                // 3. Avvia Timer
-                const countdown = setInterval(() => {
-                    timeLeft--;
-                    timerDisplay.innerText = timeLeft;
-                    
-                    if (timeLeft <= 0) {
-                        clearInterval(countdown);
-                        resetTerminal();
-                    }
-                }, 1000);
+        for (let card of cards) {
+            let text = card.innerText.toUpperCase();
+            if (text.includes(input)) {
+                card.style.display = "";
+                count++;
+            } else {
+                card.style.display = "none";
             }
-        }, 100);
+        }
+        status.innerText = `TROVATI ${count} FILE CORRISPONDENTI.`;
     }
 
-    function resetTerminal() {
-        isLocked = false;
-        document.getElementById('lockout-screen').style.display = 'none';
-        document.getElementById('main-document').style.display = 'block';
-        document.body.classList.remove('alert-flash');
-        document.getElementById('timer-display').innerText = "30";
-        alert("Terminale ripristinato. Non tentare ulteriori violazioni.");
-    }
+    // --- LOG DI SISTEMA ---
+    const messages = [
+        ">> ANALISI MEMETICA IN CORSO...",
+        ">> UPLINK CRITTOGRAFATO ATTIVO.",
+        ">> MONITORAGGIO TERMINALE AGENTE...",
+        ">> FILE SCP-096 AGGIORNATO.",
+        ">> TRACCIAMENTO IP ORIGIN... [FAIL]",
+        ">> CONNESSIONE SITO-19 STABILE."
+    ];
 
-    // Blocca anche il menu del tasto destro
-    document.addEventListener('contextmenu', e => {
-        e.preventDefault();
-        initiateLockdown();
-    });
+    function addLog() {
+        const container = document.getElementById('system-logs');
+        const log = document.createElement('div');
+        log.style.marginBottom = "5px";
+        log.innerText = messages[Math.floor(Math.random() * messages.length)];
+        container.appendChild(log);
+        if (container.childNodes.length > 5) container.removeChild(container.firstChild);
+    }
+    setInterval(addLog, 4000);
+
 </script>
 
 </body>
