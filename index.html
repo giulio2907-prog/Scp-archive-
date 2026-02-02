@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>TERMINAL - ELEGANCE BORDER SECTOR</title>
+    <style>
+        /* Base - Estetica FBI / Cyber */
+        body { 
+            background-color: #0a0a0a; 
+            color: #00ff41; /* Verde Matrix/Terminale */
+            font-family: 'Courier New', Courier, monospace; 
+            margin: 0; 
+            line-height: 1.6;
+            text-transform: uppercase;
+        }
+
+        /* Header e Navigazione */
+        header { 
+            border-bottom: 2px solid #00ff41; 
+            padding: 20px; 
+            background: #000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .status-blink {
+            animation: blink 1s infinite;
+            color: red;
+            font-weight: bold;
+        }
+
+        @keyframes blink { 50% { opacity: 0; } }
+
+        nav ul { list-style: none; display: flex; gap: 20px; }
+        nav a { color: #00ff41; text-decoration: none; border: 1px solid #00ff41; padding: 5px 10px; font-size: 0.8em; }
+        nav a:hover { background: #00ff41; color: #000; }
+
+        /* Contenitori Sezioni */
+        section { 
+            padding: 40px 10%; 
+            border: 1px solid #1a1a1a;
+            margin: 20px;
+        }
+
+        h1, h2 { border-left: 5px solid #00ff41; padding-left: 15px; letter-spacing: 3px; }
+
+        /* Form Security Secret Mode */
+        .configurator-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .secure-card {
+            border: 1px solid #00ff41;
+            padding: 20px;
+            background: rgba(0, 255, 65, 0.05);
+            position: relative;
+        }
+
+        .secure-card::before {
+            content: "CLASSIFIED";
+            position: absolute;
+            top: -10px; right: 10px;
+            background: #000; padding: 0 5px; font-size: 0.7em;
+        }
+
+        input, select {
+            background: #000;
+            border: 1px solid #00ff41;
+            color: #00ff41;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            font-family: 'Courier New', monospace;
+        }
+
+        button {
+            background: #00ff41;
+            color: #000;
+            border: none;
+            padding: 15px;
+            width: 100%;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover { background: #003300; color: #00ff41; }
+
+        /* Sezione Location */
+        .coordinates { font-size: 1.2em; color: #888; }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">[ ELEGANCE BORDER // SYSTEM_v4.1 ]</div>
+    <div class="status-blink">● ENCRYPTED CONNECTION ACTIVE</div>
+    <nav>
+        <ul>
+            <li><a href="#">HOME</a></li>
+            <li><a href="#">SECURITY</a></li>
+            <li><a href="#">PRIVACY</a></li>
+            <li><a href="#">FOOD</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section>
+    <h1>LOCALIZZAZIONE SETTORE</h1>
+    <p class="coordinates">COORDINATE: 43.7831° N, 7.5258° E (CONFINE FRANCIA)</p>
+    <p>> ACCESSO AUTORIZZATO... <br>
+       > ZONA DI OPERAZIONE: RIVIERA ITALO-FRANCESE.<br>
+       > STATO: SORVEGLIANZA ATTIVA.</p>
+</section>
+
+<section id="security">
+    <h2>REQUISIZIONE SISTEMI DI SICUREZZA</h2>
+    <div class="configurator-grid">
+        
+        <div class="secure-card">
+            <h3>DOMESTIC SURVEILLANCE</h3>
+            <form>
+                <input type="text" placeholder="INDIRIZZO TARGET" required>
+                <input type="email" placeholder="ID_MAIL_UTENTE" required>
+                <select>
+                    <option disabled selected>LIVELLO DI CRITICITÀ</option>
+                    <option>LEVEL 1 - MONITORAGGIO</option>
+                    <option>LEVEL 2 - INTERCETTAZIONE</option>
+                    <option>LEVEL 3 - TOTAL LOCKDOWN</option>
+                </select>
+                <label>DATA INTERVENTO:</label>
+                <input type="date">
+                <button>ESEGUI PROTOCOLLO INSTALLAZIONE</button>
+            </form>
+        </div>
+
+        <div class="secure-card" style="border-color: #ff3333; color: #ff3333;">
+            <h3 style="border-color: #ff3333;">CORPORATE INTELLIGENCE</h3>
+            <form>
+                <input type="text" placeholder="SEDE OPERATIVA AZIENDALE" style="border-color: #ff3333; color: #ff3333;">
+                <input type="email" placeholder="EMAIL_AZIENDALE_CRITTOGRAFATA" style="border-color: #ff3333; color: #ff3333;">
+                <select style="border-color: #ff3333; color: #ff3333;">
+                    <option>CORP_SEC: STANDARD</option>
+                    <option>CORP_SEC: HIGH_DENSITY</option>
+                    <option>CORP_SEC: BORDER_PROTOCOL</option>
+                </select>
+                <label>DATA AUDIT:</label>
+                <input type="date" style="border-color: #ff3333; color: #ff3333;">
+                <button style="background: #ff3333;">INIZIA SCANSIONE AZIENDALE</button>
+            </form>
+        </div>
+
+    </div>
+</section>
+
+<footer style="text-align: center; padding: 20px; font-size: 0.7em; opacity: 0.5;">
+    TERMINAL_ID: 8829-X // TUTTI I DIRITTI RISERVATI ALL'AUTORITÀ DI CONFINE
+</footer>
+
+</body>
+</html>
