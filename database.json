@@ -1,0 +1,26 @@
+[
+  {
+    "id": "SCP-049",
+    "name": "Plague Doctor",
+    "class": "euclid",
+    "desc": "Umanoide con maschera da medico della peste. Tocco letale."
+  },
+  {
+    "id": "SCP-106",
+    "name": "The Old Man",
+    "class": "keter",
+    "desc": "Entità corrosiva che trascina le vittime in una dimensione tascabile."
+  },
+  {
+    "id": "SCP-173",
+    "name": "The Sculpture",
+    "class": "euclid",
+    "desc": "Non può muoversi nel raggio visivo. Estremamente ostile."
+  },
+  {
+    "id": "SCP-999",
+    "name": "Tickle Monster",
+    "class": "safe",
+    "desc": "Massa gelatinosa che induce euforia immediata."
+  }
+]
